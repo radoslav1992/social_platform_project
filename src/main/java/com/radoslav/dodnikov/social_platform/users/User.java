@@ -1,6 +1,7 @@
 package com.radoslav.dodnikov.social_platform.users;
 
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
+import com.radoslav.dodnikov.social_platform.users.authorities.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -43,11 +44,14 @@ public class User extends AbstractEntity implements UserDetails {
     @ManyToMany(mappedBy = "friends", fetch = FetchType.LAZY)
     private Set<User> friendsOf;
 
+    private Set<Authority> authorities;
+
     public User() {
         this.followers = new HashSet<>();
         this.following = new HashSet<>();
         this.friends = new HashSet<>();
         this.friendsOf = new HashSet<>();
+        this.authorities = new HashSet<>();
     }
 
     public User(String username, String password, String email) {
@@ -58,6 +62,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.following = new HashSet<>();
         this.friends = new HashSet<>();
         this.friendsOf = new HashSet<>();
+        this.authorities = new HashSet<>();
     }
 
     public String getUsername() {
@@ -100,6 +105,10 @@ public class User extends AbstractEntity implements UserDetails {
         this.followers = followers;
     }
 
+    public void addFollower(User follower) {
+        this.followers.add(follower);
+    }
+
     public Set<User> getFollowing() {
         return following;
     }
@@ -116,6 +125,10 @@ public class User extends AbstractEntity implements UserDetails {
         this.friends = friends;
     }
 
+    public void addFriend(User friend) {
+        this.friends.add(friend);
+    }
+
     public Set<User> getFriendsOf() {
         return friendsOf;
     }
@@ -123,6 +136,8 @@ public class User extends AbstractEntity implements UserDetails {
     public void setFriendsOf(Set<User> friendsOf) {
         this.friendsOf = friendsOf;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -145,8 +160,12 @@ public class User extends AbstractEntity implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Collection<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
 }

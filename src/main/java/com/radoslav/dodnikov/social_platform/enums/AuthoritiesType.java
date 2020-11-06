@@ -1,4 +1,4 @@
-package com.radoslav.dodnikov.social_platform.Enums;
+package com.radoslav.dodnikov.social_platform.enums;
 
 public enum AuthoritiesType {
 
