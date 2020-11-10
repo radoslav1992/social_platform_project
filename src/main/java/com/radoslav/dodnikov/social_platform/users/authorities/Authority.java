@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,10 @@ public class Authority extends AbstractEntity implements GrantedAuthority {
 
     @ManyToMany(mappedBy = "authorities")
     private Set<User> users;
+
+    public Authority() {
+        this.users = new HashSet<>();
+    }
 
     @Override
     public String getAuthority() {

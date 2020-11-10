@@ -1,5 +1,6 @@
 package com.radoslav.dodnikov.social_platform.users;
 
+import com.radoslav.dodnikov.social_platform.communities.Community;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
 import com.radoslav.dodnikov.social_platform.users.authorities.Authority;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,7 +45,13 @@ public class User extends AbstractEntity implements UserDetails {
     @ManyToMany(mappedBy = "friends", fetch = FetchType.LAZY)
     private Set<User> friendsOf;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_authorities",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_id")})
     private Set<Authority> authorities;
+
+    private Set<Community> communities;
 
     public User() {
         this.followers = new HashSet<>();
@@ -52,6 +59,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.friends = new HashSet<>();
         this.friendsOf = new HashSet<>();
         this.authorities = new HashSet<>();
+        this.communities = new HashSet<>();
     }
 
     public User(String username, String password, String email) {
@@ -63,6 +71,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.friends = new HashSet<>();
         this.friendsOf = new HashSet<>();
         this.authorities = new HashSet<>();
+        this.communities = new HashSet<>();
     }
 
     public String getUsername() {
@@ -137,7 +146,13 @@ public class User extends AbstractEntity implements UserDetails {
         this.friendsOf = friendsOf;
     }
 
+    public Set<Community> getCommunities() {
+        return communities;
+    }
 
+    public void setCommunities(Set<Community> communities) {
+        this.communities = communities;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
