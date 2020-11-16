@@ -1,6 +1,7 @@
 package com.radoslav.dodnikov.social_platform.users;
 
 import com.radoslav.dodnikov.social_platform.communities.Community;
+import com.radoslav.dodnikov.social_platform.forums.Forum;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
 import com.radoslav.dodnikov.social_platform.users.authorities.Authority;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,7 +52,11 @@ public class User extends AbstractEntity implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "authority_id")})
     private Set<Authority> authorities;
 
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY, targetEntity = Community.class)
     private Set<Community> communities;
+
+    @OneToMany(mappedBy = "creator_id", targetEntity = Forum.class, fetch = FetchType.LAZY)
+    private Set<Forum> forums;
 
     public User() {
         this.followers = new HashSet<>();
@@ -181,6 +186,14 @@ public class User extends AbstractEntity implements UserDetails {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Forum> getForums() {
+        return forums;
+    }
+
+    public void setForums(Set<Forum> forums) {
+        this.forums = forums;
     }
 
 }

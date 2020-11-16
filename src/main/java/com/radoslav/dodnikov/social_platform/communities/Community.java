@@ -1,5 +1,6 @@
 package com.radoslav.dodnikov.social_platform.communities;
 
+import com.radoslav.dodnikov.social_platform.forums.Forum;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
 import com.radoslav.dodnikov.social_platform.users.User;
 
@@ -22,6 +23,9 @@ public class Community extends AbstractEntity {
             joinColumns = {@JoinColumn(name = "community_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> members;
+
+    @OneToMany(mappedBy = "community_id", targetEntity = Forum.class, fetch = FetchType.LAZY)
+    private Set<Forum> forums;
 
     public Community(String title, String description) {
         this.title = title;
@@ -59,5 +63,13 @@ public class Community extends AbstractEntity {
 
     public void addMember(User newMember) {
         this.members.add(newMember);
+    }
+
+    public Set<Forum> getForums() {
+        return forums;
+    }
+
+    public void setForums(Set<Forum> forums) {
+        this.forums = forums;
     }
 }
