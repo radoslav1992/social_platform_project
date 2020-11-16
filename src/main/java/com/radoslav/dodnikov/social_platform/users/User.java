@@ -3,6 +3,7 @@ package com.radoslav.dodnikov.social_platform.users;
 import com.radoslav.dodnikov.social_platform.communities.Community;
 import com.radoslav.dodnikov.social_platform.forums.Forum;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
+import com.radoslav.dodnikov.social_platform.posts.Post;
 import com.radoslav.dodnikov.social_platform.users.authorities.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,11 +53,14 @@ public class User extends AbstractEntity implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "authority_id")})
     private Set<Authority> authorities;
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY, targetEntity = Community.class)
+    @ManyToMany(mappedBy = "members", targetEntity = Community.class, fetch = FetchType.LAZY)
     private Set<Community> communities;
 
     @OneToMany(mappedBy = "creator_id", targetEntity = Forum.class, fetch = FetchType.LAZY)
     private Set<Forum> forums;
+
+    @OneToMany(mappedBy = "creator_id", targetEntity = Post.class, fetch = FetchType.LAZY)
+    private Set<Post> posts;
 
     public User() {
         this.followers = new HashSet<>();
@@ -65,6 +69,8 @@ public class User extends AbstractEntity implements UserDetails {
         this.friendsOf = new HashSet<>();
         this.authorities = new HashSet<>();
         this.communities = new HashSet<>();
+        this.forums = new HashSet<>();
+        this.posts = new HashSet<>();
     }
 
     public User(String username, String password, String email) {
@@ -77,6 +83,8 @@ public class User extends AbstractEntity implements UserDetails {
         this.friendsOf = new HashSet<>();
         this.authorities = new HashSet<>();
         this.communities = new HashSet<>();
+        this.forums = new HashSet<>();
+        this.posts = new HashSet<>();
     }
 
     public String getUsername() {
@@ -196,4 +204,11 @@ public class User extends AbstractEntity implements UserDetails {
         this.forums = forums;
     }
 
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
 }

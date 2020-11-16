@@ -2,9 +2,11 @@ package com.radoslav.dodnikov.social_platform.forums;
 
 import com.radoslav.dodnikov.social_platform.communities.Community;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
+import com.radoslav.dodnikov.social_platform.posts.Post;
 import com.radoslav.dodnikov.social_platform.users.User;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "forums")
@@ -23,6 +25,9 @@ public class Forum extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community_id;
+
+    @OneToMany(mappedBy = "forum_id", targetEntity = Post.class, fetch = FetchType.LAZY)
+    private Set<Post> posts;
 
     public Forum(String title, String description, User creator_id, Community community_id) {
         this.title = title;
