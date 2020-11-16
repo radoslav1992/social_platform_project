@@ -1,5 +1,6 @@
 package com.radoslav.dodnikov.social_platform.users;
 
+import com.radoslav.dodnikov.social_platform.comments.Comment;
 import com.radoslav.dodnikov.social_platform.communities.Community;
 import com.radoslav.dodnikov.social_platform.forums.Forum;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
@@ -62,6 +63,9 @@ public class User extends AbstractEntity implements UserDetails {
     @OneToMany(mappedBy = "creator_id", targetEntity = Post.class, fetch = FetchType.LAZY)
     private Set<Post> posts;
 
+    @OneToMany(mappedBy = "creator_id", targetEntity = Comment.class, fetch = FetchType.LAZY)
+    private Set<Comment> comments;
+
     public User() {
         this.followers = new HashSet<>();
         this.following = new HashSet<>();
@@ -71,6 +75,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.communities = new HashSet<>();
         this.forums = new HashSet<>();
         this.posts = new HashSet<>();
+        this.comments = new HashSet<>();
     }
 
     public User(String username, String password, String email) {
@@ -85,6 +90,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.communities = new HashSet<>();
         this.forums = new HashSet<>();
         this.posts = new HashSet<>();
+        this.comments = new HashSet<>();
     }
 
     public String getUsername() {
@@ -211,4 +217,13 @@ public class User extends AbstractEntity implements UserDetails {
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
 }
