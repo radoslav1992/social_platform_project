@@ -2,11 +2,11 @@ package com.radoslav.dodnikov.social_platform.users;
 
 import com.radoslav.dodnikov.social_platform.comments.Comment;
 import com.radoslav.dodnikov.social_platform.communities.Community;
+import com.radoslav.dodnikov.social_platform.customexceptions.NoSuchEntityException;
 import com.radoslav.dodnikov.social_platform.forums.Forum;
 import com.radoslav.dodnikov.social_platform.interfaces.AbstractEntity;
 import com.radoslav.dodnikov.social_platform.posts.Post;
 import com.radoslav.dodnikov.social_platform.users.authorities.Authority;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -155,6 +155,15 @@ public class User extends AbstractEntity implements UserDetails {
 
     public void addFriend(User friend) {
         this.friends.add(friend);
+    }
+
+    public boolean removeFriend(User user) throws NoSuchEntityException {
+        for (User friend : this.friends) {
+            if (user.getId() == friend.getId()) {
+                return this.friends.remove(friend);
+            }
+        }
+        throw new NoSuchEntityException("There is no such user.");
     }
 
     public Set<User> getFriendsOf() {
